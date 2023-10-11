@@ -1,0 +1,23 @@
+import pandas as pd
+import requests
+
+# define url & api key
+url = 'https://api.themoviedb.org/3/movie/top_rated'
+api_key = '7be4cdbf9bf067ad7314656c731029f7'
+
+# to concate the looped page into df and convert json into csv
+df = pd.DataFrame()
+
+# to loop page; loop start
+for page in range(1,201):
+  # make request
+  response = requests.get(f"{url}?api_key={api_key}&page={page}")
+  movie_data = response.json()
+  
+  # print request to check & concate into empty df
+  df = pd.concat([df, pd.DataFrame(movie_data)], ignore_index=True)
+# loop end
+
+# download csv & check df info
+print(df)
+df.to_csv('data_scraped_200pgs.csv', index=False)
